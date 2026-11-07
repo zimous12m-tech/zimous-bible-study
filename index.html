@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#11100e">
+<title>ZIMOUS BIBLE STUDY</title>
+<style>
+:root{
+  --bg:#100f0d;--panel:#191815;--panel2:#211f1a;--line:#39342b;
+  --gold:#c5a66d;--text:#eee8dc;--muted:#a69d8e;--soft:#d7c7a8;
+  --blue:#5b8bbf;--teal:#4a9b9b;--green:#8fb98b;--amber:#c9a24a;
+  --purple:#7a5fa3;--red:#c87869;--rose:#c97a5b;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Georgia,"Times New Roman",serif;min-height:100vh}
+button,input,select{font:inherit}button{cursor:pointer}
+.app{height:100vh;display:grid;grid-template-columns:245px minmax(320px,1fr) minmax(340px,440px);gap:1px;background:var(--line)}
+.sidebar,.reader,.analysis{background:var(--bg);min-height:0}
+.sidebar{display:flex;flex-direction:column;padding:18px 14px;overflow:hidden}
+.brand{font-size:19px;color:var(--gold);letter-spacing:.3px}
+.sub{font:11px Arial;color:var(--muted);margin:5px 0 18px}
+.searchbox,input,select{background:#141310;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:10px;outline:none}
+.searchbox{width:100%;font:12px Arial;margin-bottom:12px}
+.booklist{overflow:auto;flex:1}
+.group{font:10px Arial;color:var(--gold);letter-spacing:1px;margin:12px 5px 7px}
+.book{width:100%;text-align:left;border:0;background:transparent;color:#c9c0b1;padding:8px 9px;border-radius:7px;font:13px Georgia;display:flex;justify-content:space-between}
+.book:hover,.book.active{background:#29251d;color:var(--gold)}
+.reader{display:flex;flex-direction:column;min-width:0;padding:16px 18px;overflow:hidden}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.toolbar select{font:12px Arial;min-width:110px}
+.toolbar button,.action{background:#28241c;border:1px solid var(--line);color:var(--gold);padding:9px 12px;border-radius:7px;font:12px Arial}
+.reader-content{overflow:auto;flex:1;padding:12px 10px}
+.reference{color:var(--gold);font-size:15px;margin:8px 0 18px;letter-spacing:1px}
+.verse-line{padding:10px 12px;border-radius:6px;line-height:1.75;font-size:17px;cursor:pointer;position:relative;transition:background .15s}
+.verse-line:hover{background:#27231c}
+.verse-line.highlighted{background:#2b2418;border-left:3px solid var(--gold);padding-left:9px}
+.vnum{color:var(--gold);font-size:11px;margin-right:8px;vertical-align:super}
+.verse-tools{display:flex;gap:4px;margin-top:6px;opacity:0;transition:opacity .15s}
+.verse-line:hover .verse-tools,.verse-line.highlighted .verse-tools{opacity:1}
+.verse-tools button{background:#2e2822;border:1px solid var(--line);color:var(--soft);font:10px Arial;padding:3px 8px;border-radius:4px}
+.verse-tools button:hover{color:var(--gold);border-color:var(--gold)}
+
+.analysis{display:flex;flex-direction:column;padding:15px;overflow:hidden}
+.tabs{display:flex;gap:2px;overflow-x:auto;border-bottom:1px solid var(--line);margin-bottom:12px}
+.tab{white-space:nowrap;background:none;border:0;color:var(--muted);padding:10px 8px;font:11px Arial;border-bottom:2px solid transparent}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.panel{overflow:auto;flex:1}
+.card{background:var(--panel);border:1px solid #302b23;border-radius:10px;padding:14px;margin-bottom:10px}
+.card h3{font-size:14px;color:var(--gold);font-weight:normal;margin:0 0 8px}
+.card p{font-size:13px;color:#c7bdad;line-height:1.65;margin:0}
+.searchform{display:flex;gap:6px;margin-bottom:10px}
+.searchform input{min-width:0;flex:1}
+.searchform button{background:var(--gold);border:0;color:#17130d;padding:0 14px;border-radius:7px;font:12px Arial}
+.muted{color:var(--muted);font:11px Arial}
+.result{border-bottom:1px solid var(--line);padding:11px 2px}
+.result strong{color:var(--gold);font-size:12px}
+.result p{font-size:13px;line-height:1.6;margin:5px 0 0}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.65 ui-monospace,monospace;color:#d7cbb8}
+.mobilebar{display:none}
+
+/* NOVO: Início / Método */
+.method-card{background:linear-gradient(135deg,#1a1712,#221e16);border:1px solid var(--gold);border-radius:12px;padding:18px;margin-bottom:14px}
+.method-card h2{color:var(--gold);font-size:18px;margin:0 0 8px;font-weight:normal}
+.method-card p{font-size:13px;color:#c7bdad;line-height:1.65;margin:0 0 14px}
+.method-step{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start}
+.method-num{background:var(--gold);color:#17130d;font:bold 14px Arial;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.method-body b{color:var(--soft);display:block;font-size:13px;margin-bottom:3px}
+.method-body span{font-size:12px;color:var(--muted);line-height:1.5}
+.cta-btn{display:block;width:100%;background:var(--gold);color:#17130d;border:0;padding:12px;border-radius:8px;font:bold 13px Arial;margin-top:10px;cursor:pointer}
+.cta-btn:hover{background:#d4b96a}
+
+/* NOVO: Grid de temas */
+.theme-intro{background:var(--panel);border-left:3px solid var(--gold);padding:12px 14px;border-radius:6px;margin-bottom:14px;font-size:12px;color:#c7bdad;line-height:1.6}
+.theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.theme-card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;transition:all .2s;text-align:left}
+.theme-card:hover{border-color:var(--gold);transform:translateY(-2px);background:var(--panel2)}
+.theme-icon{font-size:22px;display:block;margin-bottom:6px}
+.theme-title{font-size:12px;color:var(--soft);font-weight:600;line-height:1.3;display:block}
+.theme-summary{font-size:10px;color:var(--muted);line-height:1.4;margin-top:5px;display:block}
+
+/* NOVO: Resultado de tema em secções */
+.theme-result-header{background:linear-gradient(135deg,var(--panel2),var(--panel));border-radius:10px;padding:16px;margin-bottom:14px;border-left:4px solid var(--gold)}
+.theme-result-header .icon{font-size:28px;float:right;margin-top:-4px}
+.theme-result-header h2{font-size:16px;color:var(--gold);margin:0 0 6px;font-weight:normal}
+.theme-result-header p{font-size:12px;color:#c7bdad;line-height:1.5;margin:0}
+
+.section-card{background:var(--panel);border-radius:10px;margin-bottom:12px;overflow:hidden;border-left:4px solid var(--line)}
+.section-card.deus{border-left-color:var(--amber)}
+.section-card.exemplos{border-left-color:var(--blue)}
+.section-card.solucoes{border-left-color:var(--green)}
+.section-card.versiculos{border-left-color:var(--purple)}
+.section-card.pesquisa{border-left-color:var(--muted)}
+.section-header{padding:10px 14px;background:#1a1814;display:flex;align-items:center;gap:8px}
+.section-header .ico{font-size:16px}
+.section-header h3{font-size:13px;color:var(--gold);margin:0;font-weight:normal;letter-spacing:.3px}
+.section-body{padding:12px 14px}
+
+.verse-box{background:#14120f;border-radius:6px;padding:10px 12px;margin-bottom:8px;border-left:2px solid var(--gold)}
+.verse-box strong{display:block;color:var(--gold);font-size:11px;margin-bottom:4px;font-weight:normal}
+.verse-box p{font-size:12px;color:#d7cbb8;line-height:1.6;margin:0}
+.verse-box .vnum{font-size:10px}
+
+.exemplo-item{display:flex;gap:10px;margin-bottom:12px;align-items:flex-start;padding-bottom:12px;border-bottom:1px solid #2a251e}
+.exemplo-item:last-child{border:0;padding-bottom:0;margin-bottom:0}
+.exemplo-nome{color:var(--soft);font-size:12px;font-weight:600;min-width:70px;flex-shrink:0}
+.exemplo-body{flex:1;font-size:11px;color:#b8ae9d;line-height:1.55}
+.exemplo-body strong{color:var(--gold);font-size:10px;display:block;margin-top:4px;font-weight:normal}
+
+.solucao-item{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #2a251e}
+.solucao-item:last-child{border:0;padding-bottom:0;margin-bottom:0}
+.solucao-item h4{font-size:12px;color:var(--soft);margin:0 0 4px;font-weight:600}
+.solucao-item p{font-size:11px;color:#b8ae9d;line-height:1.55;margin:0 0 4px}
+.solucao-item strong{color:var(--gold);font-size:10px;font-weight:normal}
+
+/* NOVO: Dúvidas (accordion) */
+.duvida-cat{font:10px Arial;color:var(--gold);letter-spacing:1.2px;margin:14px 0 8px;text-transform:uppercase}
+.duvida-item{background:var(--panel);border:1px solid var(--line);border-radius:8px;margin-bottom:8px;overflow:hidden}
+.duvida-header{padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.duvida-header:hover{background:var(--panel2)}
+.duvida-q{font-size:12px;color:var(--soft);line-height:1.5;flex:1}
+.duvida-toggle{color:var(--gold);font-size:16px;flex-shrink:0;line-height:1}
+.duvida-body{display:none;padding:0 14px 14px;border-top:1px solid var(--line)}
+.duvida-body.open{display:block;padding-top:12px}
+.duvida-body h5{font:10px Arial;color:var(--gold);letter-spacing:1px;margin:10px 0 4px;text-transform:uppercase}
+.duvida-body p{font-size:11px;color:#b8ae9d;line-height:1.65;margin:0 0 6px}
+.veredito{background:rgba(143,185,139,.08);border-left:3px solid var(--green);padding:8px 10px;border-radius:4px;margin-top:10px}
+.veredito strong{color:var(--green);font-size:11px;display:block;margin-bottom:3px}
+.veredito span{font-size:11px;color:#c7bdad;line-height:1.5}
+.contradicao-badge{display:inline-block;background:rgba(200,120,105,.15);color:var(--red);font:9px Arial;padding:2px 7px;border-radius:3px;letter-spacing:.5px;margin-bottom:5px}
+
+@media(max-width:900px){
+  .app{grid-template-columns:190px minmax(280px,1fr)}
+  .analysis{grid-column:1/-1;display:none}
+  .app.view-analysis{grid-template-columns:1fr}
+  .app.view-analysis .sidebar,.app.view-analysis .reader{display:none}
+  .app.view-analysis .analysis{display:flex}
+  .mobilebar{display:flex;gap:6px;padding:7px;background:#171511}
+  .mobilebar button{flex:1}
+}
+@media(max-width:600px){
+  .app{height:calc(100vh - 44px);display:flex;flex-direction:column;grid-template-columns:none}
+  .sidebar,.reader,.analysis{display:none}
+  .app.view-books .sidebar{display:flex;flex:1;overflow:auto;padding:10px}
+  .app.view-reader .reader{display:flex;flex:1;padding:10px}
+  .app.view-analysis .analysis{display:flex;flex:1}
+  .reader-content{padding:8px 3px}
+  .toolbar select{flex:1}
+  .mobilebar{height:44px}
+}
+</style>
+</head>
+<body>
+<div class="mobilebar">
+  <button class="action" onclick="showView('books')">Livros</button>
+  <button class="action" onclick="showView('reader')">Leitura</button>
+  <button class="action" onclick="showView('analysis')">Estudo</button>
+</div>
+<div class="app view-reader" id="app">
+<aside class="sidebar">
+  <div class="brand">ZIMOUS BIBLE STUDY</div>
+  <div class="sub">A Bíblia guiada como um mentor faria</div>
+  <input class="searchbox" id="filterBooks" placeholder="Pesquisar livro..." oninput="filterBooks()">
+  <div class="booklist" id="bookList"></div>
+  <div class="muted" id="status">A ligar ao motor...</div>
+</aside>
+<main class="reader">
+  <div class="toolbar">
+    <select id="bookSelect" aria-label="Livro"></select>
+    <select id="chapterSelect" aria-label="Capítulo"></select>
+    <button onclick="changeChapter(-1)">‹</button>
+    <button onclick="changeChapter(1)">›</button>
+    <button onclick="showView('analysis')">Estudar</button>
+  </div>
+  <div class="reader-content" id="readerContent">
+    <div class="reference">ZIMOUS BIBLE STUDY</div>
+    <p class="verse">A carregar o texto bíblico...</p>
+  </div>
+</main>
+<aside class="analysis">
+  <div class="tabs">
+    <button class="tab active" data-tab="inicio" onclick="setTab('inicio')">Início</button>
+    <button class="tab" data-tab="temas" onclick="setTab('temas')">Temas</button>
+    <button class="tab" data-tab="duvidas" onclick="setTab('duvidas')">Dúvidas</button>
+    <button class="tab" data-tab="pesquisa" onclick="setTab('pesquisa')">Pesquisa</button>
+    <button class="tab" data-tab="ajuda" onclick="setTab('ajuda')">?</button>
+  </div>
+  <div class="panel" id="analysisPanel"></div>
+</aside>
+</div>
+<script>
+let books=[], currentBook="", currentChapter=1, activeTab="inicio";
+let temas=[], duvidasData={categorias:[],duvidas:[]}, duvidaAberta=null;
+const $=id=>document.getElementById(id);
+
+async function api(url,options){
+  const r=await fetch(url,options);
+  const d=await r.json();
+  if(!r.ok) throw new Error(d.erro||"Erro de comunicação");
+  return d;
+}
+
+async function init(){
+ try{
+  const [s,b,t,d]=await Promise.all([
+    api('/api/status'), api('/api/books'),
+    api('/api/temas'), api('/api/duvidas')
+  ]);
+  books=b; temas=t; duvidasData=d;
+  $('status').textContent=`${s.livros} livros · ${s.versiculos.toLocaleString('pt-PT')} versículos`;
+  $('bookSelect').innerHTML=books.map(x=>`<option value="${esc(x.nome)}">${esc(x.nome)}</option>`).join('');
+  $('bookSelect').onchange=()=>selectBook($('bookSelect').value);
+  $('chapterSelect').onchange=()=>loadChapter();
+  renderBooks();
+  if(books.length) selectBook(books[0].nome);
+  setTab('inicio');
+ }catch(e){
+  $('status').textContent="Servidor não ligado";
+  $('readerContent').innerHTML=`<div class="card"><h3>Não foi possível ligar</h3><p>${esc(e.message)}. Executa <b>python servidor.py</b> e abre http://127.0.0.1:8765</p></div>`;
+ }
+}
+
+function esc(s){
+  return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ============================================================
+// Livros / Leitura
+// ============================================================
+function renderBooks(){
+ const groups=[["ANTIGO TESTAMENTO",books.slice(0,39)],["NOVO TESTAMENTO",books.slice(39)]];
+ $('bookList').innerHTML=groups.map(([g,arr])=>`<div class="group">${g}</div>`+arr.map(b=>`<button class="book ${b.nome===currentBook?'active':''}" onclick="selectBook('${esc(b.nome).replace(/'/g,"\\'")}')">${esc(b.nome)} <span>›</span></button>`).join('')).join('');
+}
+
+function filterBooks(){
+ const q=$('filterBooks').value.toLocaleLowerCase('pt');
+ document.querySelectorAll('.book').forEach(el=>el.style.display=el.textContent.toLocaleLowerCase('pt').includes(q)?'flex':'none');
+}
+
+async function selectBook(name){
+ currentBook=name;
+ const b=books.find(x=>x.nome===name);
+ if(!b)return;
+ $('bookSelect').value=name;
+ $('chapterSelect').innerHTML=b.capitulos.map(n=>`<option value="${n}">${n}</option>`).join('');
+ currentChapter=b.capitulos[0]||1;
+ $('chapterSelect').value=currentChapter;
+ renderBooks();
+ await loadChapter();
+}
+
+function getHighlights(){
+ return JSON.parse(localStorage.getItem('zimous_highlights')||'[]');
+}
+function toggleHighlight(ref){
+ let h=getHighlights();
+ h = h.includes(ref) ? h.filter(x=>x!==ref) : [...h,ref];
+ localStorage.setItem('zimous_highlights',JSON.stringify(h));
+ loadChapter();
+}
+
+async function loadChapter(){
+ currentChapter=Number($('chapterSelect').value);
+ try{
+  const d=await api(`/api/chapter?book=${encodeURIComponent(currentBook)}&chapter=${currentChapter}`);
+  const highlights = getHighlights();
+  $('readerContent').innerHTML = `<div class="reference">${esc(d.livro)} ${d.capitulo}</div>` +
+    d.versiculos.map(v=>{
+      const ref = `${d.livro} ${d.capitulo}:${v.number}`;
+      const marcado = highlights.includes(ref);
+      return `<div class="verse-line ${marcado?'highlighted':''}">
+        <span class="vnum">${v.number}</span>${esc(v.text)}
+        <div class="verse-tools">
+          <button onclick="event.stopPropagation();toggleHighlight('${esc(ref)}')">${marcado?'★ Marcado':'☆ Marcar'}</button>
+          <button onclick="event.stopPropagation();copiarTexto('${esc(ref)}','${esc(v.text).replace(/'/g,"\\'")}')">📋 Copiar</button>
+        </div>
+      </div>`;
+    }).join('');
+ }catch(e){
+  $('readerContent').innerHTML=`<p>${esc(e.message)}</p>`;
+ }
+}
+
+function copiarTexto(ref, texto){
+ const t = `${ref}\n"${texto}"\n— Almeida 1911 · Zimous Bible Study`;
+ navigator.clipboard.writeText(t).then(()=>alert('Versículo copiado!')).catch(()=>{});
+}
+
+async function changeChapter(delta){
+ const sel=$('chapterSelect'),n=Number(sel.value)+delta;
+ if(n>=1&&n<=sel.options.length){sel.value=n;await loadChapter();}
+}
+
+// ============================================================
+// Pesquisa
+// ============================================================
+async function runSearch(){
+ const consulta=$('query').value.trim(),opcao=Number($('operation').value);
+ if(!consulta)return;
+ $('searchResults').innerHTML='<p class="muted">A pesquisar...</p>';
+ try{
+  const d=await api('/api/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({opcao,consulta})});
+  if(d.tipo==='analise'||d.tipo==='concordancia'){
+   $('searchResults').innerHTML=`<h3>${esc(d.mensagem||'Resultado')}</h3><pre>${esc(d.relatorio||'')}</pre>`;
+  }else if(d.resultados){
+   $('searchResults').innerHTML=`<h3>${d.total} resultados</h3>`+d.resultados.slice(0,30).map(x=>`<div class="result"><strong>${esc(x.referencia)}</strong><p>${esc(x.texto)}</p></div>`).join('');
+  }else{
+   $('searchResults').innerHTML=`<p>${esc(d.mensagem||'Sem resultados.')}</p>`;
+  }
+ }catch(e){
+  $('searchResults').innerHTML=`<p>${esc(e.message)}</p>`;
+ }
+}
+
+// ============================================================
+// Estudo Temático
+// ============================================================
+function renderThemeGrid(){
+ return `<div class="theme-intro">💡 <b>Escolhe o que estás a viver.</b> A app reúne o que a Bíblia diz, exemplos de quem passou pelo mesmo, soluções práticas e a perspetiva de Deus.</div>
+ <div class="theme-grid">${temas.map(t=>`
+   <button class="theme-card" style="border-left:3px solid ${t.cor}" onclick="runTema('${t.id}')">
+     <span class="theme-icon">${t.icone}</span>
+     <span class="theme-title">${esc(t.titulo)}</span>
+     <span class="theme-summary">${esc(t.resumo)}</span>
+   </button>`).join('')}
+ </div>
+ <div class="searchform">
+   <input id="temaLivre" placeholder="Ou descreve o que sentes..." onkeydown="if(event.key==='Enter')runTemaLivre()">
+   <button onclick="runTemaLivre()">Procurar</button>
+ </div>
+ <div id="temaResultado"></div>`;
+}
+
+function runTemaLivre(){
+ const q = $('temaLivre').value.trim();
+ if(!q) return;
+ runTemaTexto(q);
+}
+
+async function runTema(id){ await runTemaTexto(id); }
+
+async function runTemaTexto(consulta){
+ $('temaResultado').innerHTML='<p class="muted">A preparar o estudo...</p>';
+ try{
+  const d = await api(`/api/estudo-tematico?q=${encodeURIComponent(consulta)}`);
+  if(!d.sucesso){
+    $('temaResultado').innerHTML=`<p>${esc(d.erro||'Erro.')}</p>`;
+    return;
+  }
+  const t = d.tema;
+  let html = `<div class="theme-result-header" style="border-left-color:${t.cor}">
+    <span class="icon">${t.icone||'🔍'}</span>
+    <h2>${esc(t.titulo)}</h2>
+    <p>${esc(t.resumo||'')}</p>
+  </div>`;
+
+  // 1. Perspetiva de Deus
+  if(t.perspetiva_deus){
+    html += `<div class="section-card deus">
+      <div class="section-header"><span class="ico">🌟</span><h3>O que Deus diz sobre isto</h3></div>
+      <div class="section-body">
+        <p style="font-size:12px;color:#c7bdad;line-height:1.65;margin-bottom:10px;"><b style="color:var(--amber)">${esc(t.perspetiva_deus.titulo)}</b><br>${esc(t.perspetiva_deus.texto)}</p>
+        ${t.perspetiva_deus.versiculos.map(v=>renderVersiculoBox(v)).join('')}
+      </div>
+    </div>`;
+  }
+
+  // 2. Exemplos
+  if(t.exemplos && t.exemplos.length){
+    html += `<div class="section-card exemplos">
+      <div class="section-header"><span class="ico">👥</span><h3>Pessoas que passaram pelo mesmo</h3></div>
+      <div class="section-body">
+        ${t.exemplos.map(e=>`<div class="exemplo-item">
+          <div class="exemplo-nome">${esc(e.nome)}</div>
+          <div class="exemplo-body">
+            ${esc(e.resumo)}
+            <strong>📖 ${esc(e.referencia)}</strong>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  // 3. Soluções
+  if(t.solucoes && t.solucoes.length){
+    html += `<div class="section-card solucoes">
+      <div class="section-header"><span class="ico">✅</span><h3>O que fazer — passos práticos</h3></div>
+      <div class="section-body">
+        ${t.solucoes.map(s=>`<div class="solucao-item">
+          <h4>${esc(s.titulo)}</h4>
+          <p>${esc(s.texto)}</p>
+          <strong>📖 ${esc(s.referencia)}</strong>
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  // 4. Versículos-chave
+  if(t.versiculos_chave && t.versiculos_chave.length){
+    html += `<div class="section-card versiculos">
+      <div class="section-header"><span class="ico">📖</span><h3>Versículos para ler e reler</h3></div>
+      <div class="section-body">
+        ${t.versiculos_chave.map(v=>renderVersiculoBox(v)).join('')}
+      </div>
+    </div>`;
+  }
+
+  // 5. Pesquisa ampla (concordância)
+  if(t.pesquisa_ampliada && t.pesquisa_ampliada.length){
+    html += `<div class="section-card pesquisa">
+      <div class="section-header"><span class="ico">🔎</span><h3>Outras passagens relacionadas</h3></div>
+      <div class="section-body">
+        ${t.pesquisa_ampliada.slice(0,8).map(r=>`<div class="verse-box" style="border-left-color:var(--muted)"><strong>${esc(r.referencia)}</strong><p>${esc(r.texto)}</p></div>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  $('temaResultado').innerHTML = html;
+ }catch(e){
+  $('temaResultado').innerHTML=`<p>${esc(e.message)}</p>`;
+ }
+}
+
+function renderVersiculoBox(v){
+ if(!v || !v.versiculos) return '';
+ const ref = v.referencia;
+ const texto = v.versiculos.map(x=>`<span class="vnum">${x.number}</span>${esc(x.text)}`).join(' ');
+ return `<div class="verse-box"><strong>${esc(ref)}</strong><p>${texto}</p></div>`;
+}
+
+// ============================================================
+// Dúvidas
+// ============================================================
+function renderDuvidas(){
+ const cats = duvidasData.categorias || [];
+ let html = `<div class="theme-intro">🛡 <b>Prova dos 9.</b> Dúvidas honestas e aparentes contradições — respondidas com contexto, explicação e versículos para verificares tu mesmo.</div>
+ <div class="searchform">
+   <input id="duvidaSearch" placeholder="Pesquisar dúvida..." oninput="filtrarDuvidas()">
+ </div>
+ <div id="duvidasLista">`;
+
+ for(const cat of cats){
+   const items = duvidasData.duvidas.filter(d=>d.categoria===cat);
+   html += `<div class="duvida-cat" data-cat="${esc(cat)}">${esc(cat)}</div>`;
+   for(const d of items){
+     html += `<div class="duvida-item" data-texto="${esc((d.pergunta+' '+d.resposta_curta).toLowerCase())}">
+       <div class="duvida-header" onclick="toggleDuvida('${d.id}',this)">
+         <span class="duvida-q">${esc(d.pergunta)}</span>
+         <span class="duvida-toggle">+</span>
+       </div>
+       <div class="duvida-body" id="db-${d.id}"></div>
+     </div>`;
+   }
+ }
+ html += `</div>`;
+ return html;
+}
+
+function filtrarDuvidas(){
+ const q = $('duvidaSearch').value.toLowerCase();
+ document.querySelectorAll('.duvida-item').forEach(el=>{
+   const txt = el.dataset.texto || '';
+   el.style.display = txt.includes(q) ? 'block' : 'none';
+ });
+ document.querySelectorAll('.duvida-cat').forEach(el=>{
+   const next = el.nextElementSibling;
+   // Mostra/esconde categorias consoante haja itens visiveis
+   let irmao = el.nextElementSibling;
+   let haVisivel = false;
+   while(irmao && !irmao.classList.contains('duvida-cat')){
+     if(irmao.classList.contains('duvida-item') && irmao.style.display!=='none') haVisivel = true;
+     irmao = irmao.nextElementSibling;
+   }
+   el.style.display = haVisivel ? 'block' : 'none';
+ });
+}
+
+async function toggleDuvida(id, header){
+ const body = $('db-'+id);
+ const toggle = header.querySelector('.duvida-toggle');
+ if(body.classList.contains('open')){
+   body.classList.remove('open');
+   toggle.textContent='+';
+   return;
+ }
+ if(body.innerHTML.trim()){
+   body.classList.add('open');
+   toggle.textContent='−';
+   return;
+ }
+ body.innerHTML = '<p class="muted">A carregar...</p>';
+ try{
+   const d = await api(`/api/duvida/${id}`);
+   let html = '';
+   if(d.categoria==='Aparentes contradições'){
+     html += `<div class="contradicao-badge">APARENTE CONTRADIÇÃO</div>`;
+   }
+   html += `<h5>Resposta curta</h5><p><b>${esc(d.resposta_curta)}</b></p>`;
+   html += `<h5>Contexto</h5><p>${esc(d.contexto)}</p>`;
+   html += `<h5>Explicação</h5><p>${esc(d.explicacao)}</p>`;
+   if(d.versiculos_resolvidos && d.versiculos_resolvidos.length){
+     html += `<h5>Lê tu mesmo</h5>`;
+     for(const v of d.versiculos_resolvidos){
+       html += renderVersiculoBox(v);
+     }
+   }
+   if(d.veredito){
+     html += `<div class="veredito"><strong>Veredito</strong><span>${esc(d.veredito)}</span></div>`;
+   }
+   body.innerHTML = html;
+   body.classList.add('open');
+   toggle.textContent='−';
+ }catch(e){
+   body.innerHTML=`<p>${esc(e.message)}</p>`;
+ }
+}
+
+// ============================================================
+// Tabs
+// ============================================================
+function setTab(tab){
+ activeTab=tab;
+ document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));
+ const p = $('analysisPanel');
+
+ if(tab==='inicio'){
+   p.innerHTML = `
+     <div class="method-card">
+       <h2>Como ler a Bíblia</h2>
+       <p>Uma app que te guia como alguém que conhece as Escrituras o faria. Não é um livro comum — lê-se por tema, com contexto, exemplos e cruzamento de passagens.</p>
+       <div class="method-step">
+         <div class="method-num">1</div>
+         <div class="method-body"><b>Diz o que sentes ou perguntas</b><span>Ansiedade, luto, dinheiro, dúvida, perdão... em "Temas" ou "Dúvidas".</span></div>
+       </div>
+       <div class="method-step">
+         <div class="method-num">2</div>
+         <div class="method-body"><b>Vê o que Deus diz</b><span>A app reúne perspetiva divina, exemplos de personagens bíblicas, soluções práticas e versículos-chave.</span></div>
+       </div>
+       <div class="method-step">
+         <div class="method-num">3</div>
+         <div class="method-body"><b>Verifica tu mesmo</b><span>Lê os versículos no texto completo. Marca, copia, guarda. A Bíblia não pede fé cega — pede exame.</span></div>
+       </div>
+       <button class="cta-btn" onclick="setTab('temas')">Começar por um tema →</button>
+       <button class="cta-btn" style="background:transparent;border:1px solid var(--gold);color:var(--gold);margin-top:6px" onclick="setTab('duvidas')">Tenho dúvidas →</button>
+     </div>
+     <div class="card">
+       <h3>Para quem é</h3>
+       <p><b>Crente:</b> estuda a Bíblia a fundo, sozinho, como num grupo de estudo.<br><br>
+       <b>Não-crente:</b> vê as respostas às dúvidas honestas — sem pressão, com contexto e versículos para verificares.<br><br>
+       <b>Curioso:</b> navega por temas da vida real e vê o que o texto bíblico diz sobre eles.</p>
+     </div>`;
+ }
+ else if(tab==='temas'){
+   p.innerHTML = renderThemeGrid();
+ }
+ else if(tab==='duvidas'){
+   p.innerHTML = renderDuvidas();
+ }
+ else if(tab==='pesquisa'){
+   p.innerHTML = `<div class="card">
+     <h3>Pesquisa bíblica</h3>
+     <p>Pesquisa por palavra, expressão, concordância ou relações.</p>
+   </div>
+   <div class="searchform">
+     <input id="query" placeholder="Introduz a pesquisa" onkeydown="if(event.key==='Enter')runSearch()">
+     <button onclick="runSearch()">Pesquisar</button>
+   </div>
+   <select id="operation" style="width:100%;margin-bottom:10px">
+     <option value="1">Todos os termos (cruzar palavras)</option>
+     <option value="2">Expressão exata (frase)</option>
+     <option value="3">Qualquer termo (OU)</option>
+     <option value="4">Concordância (contar ocorrências)</option>
+     <option value="5">Termos relacionados (sinónimos)</option>
+     <option value="6">Análise contextual (palavras próximas)</option>
+     <option value="7">Relações (o que a entidade faz)</option>
+   </select>
+   <div id="searchResults" class="card"><p class="muted">Introduz uma pesquisa.</p></div>`;
+ }
+ else {
+   p.innerHTML = `<div class="card" style="background:var(--panel2);border-color:var(--gold)">
+     <h3>Zimous Bible Study</h3>
+     <p>A Bíblia como ela é lida por quem já sabe lê-la. Três formas de usar:</p>
+     <p style="margin-top:10px"><b style="color:var(--gold)">Temas</b> — descreve o que sentes e vê o que a Bíblia diz, com exemplos, soluções e perspetiva de Deus.</p>
+     <p style="margin-top:8px"><b style="color:var(--gold)">Dúvidas</b> — as aparentes contradições explicadas com contexto e versículos.</p>
+     <p style="margin-top:8px"><b style="color:var(--gold)">Pesquisa</b> — concordância, expressões, relações, análise contextual.</p>
+     <p style="margin-top:12px;font-size:11px;color:var(--muted)">Tradução: Almeida 1911 (domínio público).</p>
+   </div>`;
+ }
+}
+
+function showView(view){
+ const app=$('app');
+ app.classList.remove('view-books','view-reader','view-analysis');
+ app.classList.add('view-'+view);
+}
+
+init();
+</script>
+</body>
+</html>

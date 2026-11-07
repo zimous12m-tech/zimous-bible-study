@@ -1,0 +1,103 @@
+==================================================
+          MANUAL DE ESTUDO APROFUNDADO
+          ZIMOUS BIBLE STUDY
+==================================================
+
+Este manual não serve apenas para dizer "o que faz", mas sim 
+"como interpretar" e "quando usar" cada ferramenta no teu 
+estudo diário.
+
+--------------------------------------------------
+O QUE A TUA DÚVIDA DIZ SOBRE A FERRAMENTA A USAR?
+--------------------------------------------------
+
+Se a tua dúvida é: "Que versículos falam sobre fé e obras?"
+-> Usa a OPÇÃO 1 (Todos os termos).
+Porque: Vais cruzar as duas palavras e ver onde Paulo ou Tiago 
+as usam no mesmo versículo.
+
+Se a tua dúvida é: "Como começa o Salmo 23?"
+-> Usa a OPÇÃO 2 (Expressão exata).
+Porque: Vais procurar a frase exata "O Senhor é o meu pastor".
+
+Se a tua dúvida é: "Quero ver o que a Bíblia diz sobre graça, 
+independentemente de ser no Antigo ou Novo Testamento."
+-> Usa a OPÇÃO 3 (Qualquer termo) ou a OPÇÃO 5 (Termos Relacionados).
+Porque: A Opção 3 traz todos os versículos com "graça". A Opção 5 
+traz "graça" e "favor" e "misericórdia".
+
+Se a tua dúvida é: "O termo 'Aleluia' aparece quantas vezes?"
+-> Usa a OPÇÃO 4 (Concordância).
+Porque: É a única que te dá a contagem exata.
+
+Se a tua dúvida é: "Qual é o verbo mais usado quando se fala de Jesus?"
+-> Usa a OPÇÃO 6 (Análise Contextual) ou a OPÇÃO 7 (Relações).
+Porque: A Opção 6 mostra expressões (ex: "disse Jesus"). A Opção 7 
+mostra os verbos de ação ligados à entidade (ex: "Jesus curou").
+
+--------------------------------------------------
+DETALHE DAS 7 OPÇÕES (COMO LER OS RESULTADOS)
+--------------------------------------------------
+
+OPÇÃO 1: TODOS OS TERMOS
+* O que faz: Procura versículos que contenham todas as palavras 
+  que escreveste, não importa a ordem.
+* Exemplo: "amor Deus"
+* Resultado: Vais ver versículos como "Deus é amor". 
+* Dica: Se não encontrares nada, tenta usar menos palavras ou a 
+  Opção 3.
+
+OPÇÃO 2: EXPRESSÃO EXATA
+* O que faz: Procura a frase tal e qual como a escreveste.
+* Exemplo: "No princípio criou Deus"
+* Resultado: Gênesis 1:1.
+* Dica: Serve para quando te lembras de um pedaço de um versículo, 
+  mas não sabes onde está. Não uses pontuação (vírgulas, pontos) 
+  no campo de pesquisa.
+
+OPÇÃO 3: QUALQUER TERMO
+* O que faz: Procura versículos que tenham pelo menos uma das 
+  palavras (pesquisa do tipo "OU").
+* Exemplo: "graça paz"
+* Resultado: Uma lista enorme. Alguns com "graça", outros com "paz".
+* Dica: É útil para comparar dois temas, mas prepara-te para ler 
+  muitos versículos (pode chegar a centenas).
+
+OPÇÃO 4: CONCORDÂNCIA
+* O que faz: Conta a frequência das palavras.
+* Exemplo: "sangue"
+* Resultado: Mostra um relatório numérico.
+* Dica: Excelente para estudos introdutórios. Se "sangue" aparece 
+  400 vezes, sabes que é um tema central. Se aparece 2 vezes, é 
+  um detalhe.
+
+OPÇÃO 5: TERMOS RELACIONADOS
+* O que faz: Procura a palavra e os seus sinónimos (ex: morte = 
+  morrer, morto, falecer).
+* Exemplo: "vida"
+* Resultado: Traz "vida", "viver", "vivente". 
+* Dica: Esta é a ferramenta número 1 para preparar um sermão ou 
+  estudo bíblico. Ela não te deixa esquecer as variações da palavra.
+
+OPÇÃO 6: ANÁLISE CONTEXTUAL
+* O que faz: Analisa as palavras que andam "de mãos dadas" com o 
+  teu termo (num raio de 2 a 4 palavras).
+* Exemplo: "Jesus"
+* Resultado: Vais ver relatórios como "disse Jesus", "Jesus 
+  respondeu", "Jesus viu".
+* Dica: Ajuda a entender o estilo literário do autor. Se pesquisares 
+  "ouro", vais ver expressões como "ouro puro" ou "vasos de ouro".
+
+OPÇÃO 7: RELAÇÕES E AFIRMAÇÕES
+* O que faz: Procura os verbos (ações) e títulos que aparecem perto 
+  de uma personagem ou entidade.
+* Exemplo: "Deus"
+* Resultado: Vais ver "Deus criou", "Deus disse", "Deus de Israel".
+* Aviso Importante: O motor é uma máquina, não um teólogo. Se ele 
+  mostrar "Deus / matou", tens de abrir o versículo e ler. Pode ser 
+  que o texto diga "Deus não matou" ou "o inimigo de Deus matou". 
+  A proximidade das palavras não garante a gramática.
+
+--------------------------------------------------
+FIM DO MANUAL
+--------------------------------------------------
